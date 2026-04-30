@@ -2,14 +2,30 @@ import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import 'dotenv/config';
+import pino from 'pino-http';
 
 const app = express();
 // const PORT = 3000;
 
 // const result = dotenv.config;
-app.use(cors()); // securety for server render req and res
 app.use(express.json()); // parsing JSON
+app.use(cors()); // securety for server render req and res
 app.use(helmet());
+app.use(
+  pino({
+    level: 'info',
+    transport: {
+      target: 'pino-pretty',
+      options: {
+        colorize: true,
+        translateTime: 'HH:MM:ss',
+        ignore: 'pid,hostname',
+        messageFormat: '{req.method} {req.url} {res.statusCode} - {responseTime}ms',
+        hideObject: true,
+      },
+    },
+  }),
+);
 
 //add meadlewear Check err
 
