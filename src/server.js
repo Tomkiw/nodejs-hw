@@ -5,7 +5,7 @@ import 'dotenv/config';
 import pino from 'pino-http';
 
 const app = express();
-// const PORT = 3000;
+const PORT = process.env.PORT ?? 3000;
 
 // const result = dotenv.config;
 app.use(express.json()); // parsing JSON
@@ -34,8 +34,8 @@ app.get('/notes', (req, res) => {
 });
 
 app.get('/notes/:noteId', (req, res) => {
-  const { userId } = Number(req.params.userId);
-  res.status(200).json({ message: `Retrieved note with ID: ${userId}` });
+  const { noteId } = req.params.userId;
+  res.status(200).json({ message: `Retrieved note with ID: ${noteId}` });
 });
 
 // Маршрут для тестування middleware помилки
@@ -58,6 +58,6 @@ app.use((err, req, res, next) => {
   res.status(500).json({ message: err.message });
 });
 
-app.listen(process.env.PORT, () => {
-  console.log(`Server is running on port ${process.env.PORT}`);
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
 });
